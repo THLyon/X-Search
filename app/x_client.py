@@ -16,12 +16,13 @@ class XClient:
     def close(self):
         self._client.close()
 
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multipliet=1, min=1, max=8))
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=8))
     def get_user_by_username(self, username: str) -> Dict[str, Any]:
         r = self._client.get(
-            f"{API_BASE}/users/byusername{username}", 
-            params={"user.fields": "is, name, username"}, 
+            f"{API_BASE}/users/by/username/{username}", 
+            params={"user.fields": "is,name,username"}, 
         )
         r.raise_for_status()
         return r.json()
+    
     
